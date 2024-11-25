@@ -27,6 +27,8 @@ public class Socio {
         this.numTelefono = numTelefono;
         this.cuentaSocio = new CuentaSocio(numeroCuenta);
     }
+    
+
 
     public String getRut() {
         return rut;

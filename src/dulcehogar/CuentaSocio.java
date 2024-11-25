@@ -37,7 +37,8 @@ public class CuentaSocio {
     public void setCantAportada(int cantAportada) {
         this.cantAportada = cantAportada;
     }
-
+    // supresión de la advertencia por cerrar llave en pagar()
+    @SuppressWarnings("resource")
     public void pagar() {
         Scanner scanner = new Scanner(System.in);
         int monto = 0;
