@@ -17,17 +17,21 @@ public class VentanaPrincipal extends JFrame {
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new FlowLayout());
+        setLayout(new FlowLayout(FlowLayout.CENTER, 100, 10));
 
         // Crear los botones
         JButton btnRegistrar = new JButton("Registrar Socio");
         JButton btnVerDatos = new JButton("Ver Datos Socio");
         JButton btnPagarCuota = new JButton("Pagar Cuota Mensual");
+        JButton btnCuotaCancelada = new JButton("Consultar Monto Total Cancelado");
+        JButton btnMontoTotal = new JButton("Consultar Total de Cuotas Pagadas");
 
         // Agregar los botones a la ventana
         add(btnRegistrar);
         add(btnVerDatos);
         add(btnPagarCuota);
+        add(btnCuotaCancelada);
+        add(btnMontoTotal);
 
         // Acción del botón Registrar Socio
         btnRegistrar.addActionListener(new ActionListener() {
@@ -44,12 +48,25 @@ public class VentanaPrincipal extends JFrame {
                 mostrarFormularioVerDatos();
             }
         });
+
+        // Acción del boton Consultar Cuota Cancelada
+        btnCuotaCancelada.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrarFormularioCuotaCancelada();
+            }
+        });
         
         //Acción del botón Cancelar cuota Mensual
         btnPagarCuota.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 mostrarFormularioPagarCuota();
+        // Acción del botón Monto Total Cancelado
+        btnMontoTotal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                mostrarFormularioMontoTotal();
             }
         });
     }
@@ -265,11 +282,9 @@ public class VentanaPrincipal extends JFrame {
         formularioVerDatos.setSize(400, 300);
         formularioVerDatos.setLayout(new GridBagLayout());
 
-        // alinear elementos
+        // Configurar el GridBag
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
 
         // Espacio para ingresar el RUT
         gbc.gridy = 1;
@@ -388,6 +403,133 @@ public class VentanaPrincipal extends JFrame {
 
         formularioVerDatos.setVisible(true);
     }
+
+    private void mostrarFormularioCuotaCancelada() {
+        // Crear la ventana para consultar el monto total cancelado
+        JFrame formularioCuotaCancelada = new JFrame("Consultar Monto Total Cancelado");
+        formularioCuotaCancelada.setSize(400, 200);
+        formularioCuotaCancelada.setLayout(new GridBagLayout());
+    
+        // Configurar el GridBag
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
+    
+        // Espacio para ingresar el RUT
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        JLabel lblRut = new JLabel("Ingrese el RUT:");
+        formularioCuotaCancelada.add(lblRut, gbc);
+    
+        gbc.gridx = 1;
+        JTextField txtRutBusqueda = new JTextField(20);
+        formularioCuotaCancelada.add(txtRutBusqueda, gbc);
+    
+        // Botón de búsqueda
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        JButton btnBuscar = new JButton("Buscar");
+        formularioCuotaCancelada.add(btnBuscar, gbc);
+    
+        // Etiqueta para mostrar el monto total cancelado
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        JLabel lblCuotaCancelada = new JLabel("Monto Total Cancelado:");
+        formularioCuotaCancelada.add(lblCuotaCancelada, gbc);
+    
+        // Valor del monto total cancelado
+        gbc.gridx = 1;
+        JLabel lblCuotaCanceladaValor = new JLabel("");
+        formularioCuotaCancelada.add(lblCuotaCanceladaValor, gbc);
+    
+        // Acción del botón de búsqueda
+        btnBuscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String rutBuscar = txtRutBusqueda.getText();
+                boolean socioEncontrado = false;
+    
+                for (Socio socio : socios) {
+                    if (socio.getRut().equals(rutBuscar)) {
+                        // Mostrar el monto total cancelado del socio encontrado
+                        lblCuotaCanceladaValor.setText(String.valueOf(socio.getCuentaSocio().getCantAportada()));
+                        socioEncontrado = true;
+                        break;
+                    }
+                }
+                if (!socioEncontrado) {
+                    JOptionPane.showMessageDialog(formularioCuotaCancelada, "Socio no encontrado");
+                }
+            }
+        });
+    
+        formularioCuotaCancelada.setVisible(true);
+    }
+
+    private void mostrarFormularioMontoTotal() {
+        // Crear la ventana para consultar el monto total de cuotas pagadas
+        JFrame formularioMontoTotal = new JFrame("Consultar Total de Cuotas Pagadas");
+        formularioMontoTotal.setSize(400, 200);
+        formularioMontoTotal.setLayout(new GridBagLayout());
+    
+        // Configurar el GridBag
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
+    
+        // Espacio para ingresar el RUT
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        JLabel lblRut = new JLabel("Ingrese el RUT:");
+        formularioMontoTotal.add(lblRut, gbc);
+    
+        gbc.gridx = 1;
+        JTextField txtRutBusqueda = new JTextField(20);
+        formularioMontoTotal.add(txtRutBusqueda, gbc);
+    
+        // Botón de búsqueda
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        JButton btnBuscar = new JButton("Buscar");
+        formularioMontoTotal.add(btnBuscar, gbc);
+    
+        // Etiqueta para mostrar el total de cuotas pagadas
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        JLabel lblMontoTotal = new JLabel("Total de Monto Pagado:");
+        formularioMontoTotal.add(lblMontoTotal, gbc);
+    
+        // Valor del total de cuotas pagadas
+        gbc.gridx = 1;
+        JLabel lblMontoTotalValor = new JLabel("");
+        formularioMontoTotal.add(lblMontoTotalValor, gbc);
+    
+        // Acción del botón de búsqueda
+        btnBuscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String rutBuscar = txtRutBusqueda.getText();
+                boolean socioEncontrado = false;
+    
+                for (Socio socio : socios) {
+                    if (socio.getRut().equals(rutBuscar)) {
+                        // Mostrar el total de cuotas pagadas del socio encontrado
+                        lblMontoTotalValor.setText(String.valueOf(socio.getCuentaSocio().getCantAportada()));
+                        socioEncontrado = true;
+                        break;
+                    }
+                }
+                if (!socioEncontrado) {
+                    JOptionPane.showMessageDialog(formularioMontoTotal, "Socio no encontrado");
+                }
+            }
+        });
+    
+        formularioMontoTotal.setVisible(true);
+    }
+    
+    
+
 
     public static void main(String[] args) {
         // Crear y mostrar la ventana principal
