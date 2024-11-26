@@ -80,9 +80,10 @@ public class VentanaPrincipal extends JFrame {
         
         formularioPagarCuota.add(lblNumCuota);
         formularioPagarCuota.add(txtNumCuota);
-        
+        txtNumCuota.setEditable(false);
+        txtMontoCuota.setEditable(false);
         formularioPagarCuota.add(btnPagar);
-        
+        btnPagar.setEnabled(false);
         // Buscar el socio para cancelar la cuota
         btnBuscarSocio.addActionListener(new ActionListener(){
             @Override
@@ -93,8 +94,15 @@ public class VentanaPrincipal extends JFrame {
 
                 for (Socio socio : socios) {
                     if (socio.getRut().equals(rutBuscar)) {
+                        int numeroCuota = socio.getCuentaSocio().getNumCuota();
+                        if(numeroCuota >11){
+                            btnPagar.setEnabled(false);
+                        }
+                        else{
+                            btnPagar.setEnabled(true);
+                        }
                         txtMontoCuota.setText(String.valueOf(socio.getCuentaSocio().getValorCuota()));
-                        txtNumCuota.setText(String.valueOf(socio.getCuentaSocio().getNumCuota()));
+                        txtNumCuota.setText(String.valueOf(numeroCuota));
                         
                         socioEncontrado = true;
                         break;
@@ -121,8 +129,11 @@ public class VentanaPrincipal extends JFrame {
                         
                         socio.getCuentaSocio().pagarVent(montoCuotaPagar);
                         txtMontoCuota.setText(String.valueOf(socio.getCuentaSocio().getValorCuota()));
-                        txtNumCuota.setText(String.valueOf(socio.getCuentaSocio().getNumCuota()));
-                        
+                        int numeroCuota = socio.getCuentaSocio().getNumCuota();
+                        txtNumCuota.setText(String.valueOf(numeroCuota));
+                        if(numeroCuota>11){
+                            btnPagar.setEnabled(false);
+                        }
                         socioEncontrado = true;
                         break;
                     }

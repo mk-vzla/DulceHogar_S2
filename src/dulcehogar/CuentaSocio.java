@@ -11,7 +11,7 @@ public class CuentaSocio {
 
     public CuentaSocio(int numeroCuenta) {
         this.numeroCuenta = numeroCuenta;
-        this.valorCuota = 0;
+        this.valorCuota = 5000;
         this.cantAportada = 0;
         this.numCuota = 0;
     }
