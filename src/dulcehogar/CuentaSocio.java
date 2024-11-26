@@ -7,12 +7,23 @@ public class CuentaSocio {
     private int numeroCuenta;
     private int valorCuota;
     private int cantAportada;
+    private int numCuota;
 
     public CuentaSocio(int numeroCuenta) {
         this.numeroCuenta = numeroCuenta;
         this.valorCuota = 0;
         this.cantAportada = 0;
+        this.numCuota = 0;
     }
+
+    public int getNumCuota() {
+        return numCuota;
+    }
+
+    public void setNumCuota(int numCuota) {
+        this.numCuota = numCuota;
+    }
+    
 
     public int getNumeroCuenta() {
         return numeroCuenta;
@@ -51,6 +62,7 @@ public class CuentaSocio {
                     setCantAportada(getCantAportada()+monto);
 //                  valorCuota = monto;
                     setValorCuota(monto);
+                    setNumCuota(getNumCuota()+1);
                     System.out.println("Pago realizado de manera exitosa!");
                 } else {
                     System.out.println("El monto ingresado debe ser mayor a cero (0).");
@@ -59,6 +71,19 @@ public class CuentaSocio {
                 System.out.println("Ingrese un monto válido.");
             }
         } while (monto <= 0);
+    }
+    
+        // supresión de la advertencia por cerrar llave en pagar()
+    @SuppressWarnings("resource")
+    public void pagarVent(int monto) {
+
+//   cantAportada += monto;
+        setCantAportada(getCantAportada() + monto);
+//   valorCuota = monto;
+        setValorCuota(monto);
+        setNumCuota(getNumCuota() + 1);
+        System.out.println("Pago realizado de manera exitosa!");
+      
     }
 
 }
