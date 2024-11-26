@@ -22,12 +22,14 @@ public class VentanaPrincipal extends JFrame {
         // Crear los botones
         JButton btnRegistrar = new JButton("Registrar Socio");
         JButton btnVerDatos = new JButton("Ver Datos Socio");
+        JButton btnPagarCuota = new JButton("Pagar Cuota Mensual");
         JButton btnCuotaCancelada = new JButton("Consultar Monto Total Cancelado");
         JButton btnMontoTotal = new JButton("Consultar Total de Cuotas Pagadas");
 
         // Agregar los botones a la ventana
         add(btnRegistrar);
         add(btnVerDatos);
+        add(btnPagarCuota);
         add(btnCuotaCancelada);
         add(btnMontoTotal);
 
@@ -55,6 +57,11 @@ public class VentanaPrincipal extends JFrame {
             }
         });
         
+        //Acción del botón Cancelar cuota Mensual
+        btnPagarCuota.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrarFormularioPagarCuota();
         // Acción del botón Monto Total Cancelado
         btnMontoTotal.addActionListener(new ActionListener() {
             @Override
@@ -64,6 +71,99 @@ public class VentanaPrincipal extends JFrame {
         });
     }
 
+    
+    private void mostrarFormularioPagarCuota(){
+        JFrame formularioPagarCuota = new JFrame("Pagar Cuota Mensual");
+        formularioPagarCuota.setSize(500, 600);
+        formularioPagarCuota.setLayout(new GridLayout(10, 1));
+        
+        JLabel lblRut = new JLabel("RUT (12.345.678-9)");
+        JTextField txtRut = new JTextField(20);
+        JLabel lblMontoCuota = new JLabel("Monto Cuota");
+        JTextField txtMontoCuota = new JTextField(20);
+        JLabel lblNumCuota= new JLabel("Número Cuota");
+        JTextField txtNumCuota = new JTextField(20);
+        
+        
+        JButton btnBuscarSocio = new JButton("BUSCAR");
+        JButton btnPagar = new JButton("PAGAR");
+        
+        // Agregar componentes a la ventana del formulario
+        formularioPagarCuota.add(lblRut);
+        formularioPagarCuota.add(txtRut);
+        formularioPagarCuota.add(btnBuscarSocio);
+        formularioPagarCuota.add(lblMontoCuota);
+        formularioPagarCuota.add(txtMontoCuota);
+        
+        formularioPagarCuota.add(lblNumCuota);
+        formularioPagarCuota.add(txtNumCuota);
+        txtNumCuota.setEditable(false);
+        txtMontoCuota.setEditable(false);
+        formularioPagarCuota.add(btnPagar);
+        btnPagar.setEnabled(false);
+        // Buscar el socio para cancelar la cuota
+        btnBuscarSocio.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                String rutBuscar = txtRut.getText();
+                
+                boolean socioEncontrado = false;
+
+                for (Socio socio : socios) {
+                    if (socio.getRut().equals(rutBuscar)) {
+                        int numeroCuota = socio.getCuentaSocio().getNumCuota();
+                        if(numeroCuota >11){
+                            btnPagar.setEnabled(false);
+                        }
+                        else{
+                            btnPagar.setEnabled(true);
+                        }
+                        txtMontoCuota.setText(String.valueOf(socio.getCuentaSocio().getValorCuota()));
+                        txtNumCuota.setText(String.valueOf(numeroCuota));
+                        
+                        socioEncontrado = true;
+                        break;
+                    }
+
+            }
+            if (!socioEncontrado) {
+                JOptionPane.showMessageDialog(formularioPagarCuota, "Socio no encontrado");
+            }
+            }
+        });
+        // Buscar el socio para cancelar la cuota
+        btnPagar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String rutBuscar = txtRut.getText();
+                int montoCuotaPagar = Integer.valueOf(txtMontoCuota.getText());
+                int numCuotaPagar = Integer.valueOf(txtMontoCuota.getText());
+                
+                boolean socioEncontrado = false;
+                
+                for (Socio socio : socios) {
+                    if (socio.getRut().equals(rutBuscar)) {
+                        
+                        socio.getCuentaSocio().pagarVent(montoCuotaPagar);
+                        txtMontoCuota.setText(String.valueOf(socio.getCuentaSocio().getValorCuota()));
+                        int numeroCuota = socio.getCuentaSocio().getNumCuota();
+                        txtNumCuota.setText(String.valueOf(numeroCuota));
+                        if(numeroCuota>11){
+                            btnPagar.setEnabled(false);
+                        }
+                        socioEncontrado = true;
+                        break;
+                    }
+                    
+                }
+                if (!socioEncontrado) {
+                    JOptionPane.showMessageDialog(formularioPagarCuota, "Socio no encontrado");
+                }
+            }
+        });
+        // Mostrar la ventana de registro
+        formularioPagarCuota.setVisible(true);
+    }
     private void mostrarFormularioRegistrar() {
         // Crear nueva ventana para registrar un socio
         JFrame formularioRegistrar = new JFrame("Registrar Socio");
