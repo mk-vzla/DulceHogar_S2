@@ -48,7 +48,7 @@ public class DulceHogar {
                     case 3: // Cancelar Cuota
                         System.out.println("-----------------------------------------");
                         if (socio1 != null) {
-                            //socio1.getCuentaSocio().pagar();
+                            socio1.getCuentaSocio().pagar();
                             System.out.println("Presione enter para volver al menu principal.");
                             scanner.nextLine();
                         } else {
