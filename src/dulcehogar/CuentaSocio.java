@@ -1,5 +1,5 @@
 package dulcehogar;
-
+//nadadenada
 import java.util.Scanner;
 
 public class CuentaSocio {
